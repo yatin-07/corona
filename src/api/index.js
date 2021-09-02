@@ -1,10 +1,10 @@
 import axios from "axios";
 
 
-const url = ' https://corona-api.com/timeline';
+const url = ' https://corona-api.com';
    export const fetchData = async () => {
      try {
-         const { data }  = await axios.get(url);
+         const { data }  = await axios.get(`${url}/timeline`);
          //console.log(data, status);
          const newData = {
              confirmed: data.data.[0].confirmed,
@@ -21,4 +21,14 @@ const url = ' https://corona-api.com/timeline';
      } catch (error) {
          console.log(error)
      }
+  }
+
+
+  export const fetchcountries = async ()=> {
+      try {
+          const {data} = await axios.get(`${url}/countries`);
+          return data.map((data) => data.name);
+      } catch (error) {
+          
+      }
   }

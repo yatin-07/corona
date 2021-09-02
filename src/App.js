@@ -33,6 +33,7 @@ import { fetchData } from './api/index';
      return(
        <div className="container">
         <Cards data={data } isLoading= { isLoading} />
+        
         <CountryPicker />
        </div>
      )
