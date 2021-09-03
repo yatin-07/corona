@@ -2,15 +2,14 @@ import React from "react";
 import { Card, CardContent, Typography, Grid } from "@material-ui/core";
 import "./card.css";
 
-
-const Cards = ({ data: { confirmed, deaths, recovered, date } , isLoading }) => {
-    console.log(confirmed,deaths,recovered,date);
-  if(isLoading){
-      return 'loading....';
+const Cards = ({ data: { confirmed, deaths, recovered, date }, isLoading }) => {
+  console.log(confirmed, deaths, recovered, date);
+  if (isLoading) {
+    return "loading....";
   }
   return (
     <div className="container">
-      <Grid container spacing={3} justifyContent="center">
+      <Grid container spacing={3} justifyContent="center" className="card">
         <Grid item component={Card}>
           <CardContent>
             <Typography color="textSecondary" gutterBottom>
@@ -21,21 +20,21 @@ const Cards = ({ data: { confirmed, deaths, recovered, date } , isLoading }) => 
             </Typography>
             <Typography color="textSecondary">{date}</Typography>
             <Typography variant="body2" component="p">
-              No of confirmed cases
+            Number of confirmed cases from COVID-19s
             </Typography>
           </CardContent>
         </Grid>
         <Grid item component={Card}>
           <CardContent>
             <Typography color="textSecondary" gutterBottom>
-             deaths
+              deaths
             </Typography>
             <Typography variant="h5" component="h2">
               {deaths}
             </Typography>
             <Typography color="textSecondary">{date}</Typography>
             <Typography variant="body2" component="p">
-              No of confirmed deaths
+            Number of deaths caused by COVID-19.
             </Typography>
           </CardContent>
         </Grid>
@@ -49,7 +48,7 @@ const Cards = ({ data: { confirmed, deaths, recovered, date } , isLoading }) => 
             </Typography>
             <Typography color="textSecondary">{date}</Typography>
             <Typography variant="body2" component="p">
-             No of recovered people
+            Number of recoveries from COVID-19.
             </Typography>
           </CardContent>
         </Grid>

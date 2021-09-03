@@ -1,46 +1,43 @@
-import React from 'react';
-import './App.css';
-import Cards from './componenets/Cards/card';
-import CountryPicker from './componenets/Country-picker/country-picker';
-import { fetchData } from './api/index';
+import React from "react";
+import "./App.css";
+import Cards from "./componenets/Cards/card";
+import CountryPicker from "./componenets/Country-picker/country-picker";
+import { fetchData, newFetchData } from "./api/index";
 
-
- class App extends React.Component {
-   state = {
+class App extends React.Component {
+  state = {
     data: {},
     isLoading: true,
-   }
- async componentDidMount(){
-  
-  try {
-    this.setState({isLoading: true});
-    const data = await fetchData();
-    this.setState({ data: data})
-    console.log(data);
-  } catch (error) {
-   console.log(error); 
-  }
-    finally {
-      this.setState({isLoading: false})
+    country: "",
+  };
+  async componentDidMount() {
+    try {
+      this.setState({ isLoading: true });
+      const data = await fetchData();
+      this.setState({ data: data });
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      this.setState({ isLoading: false });
     }
+  }
+  handleCountryChange = async (country) => {
+    const data = await newFetchData(country);
+    this.setState({ data: data, country: country});
+    console.log(data);
+  };
 
-  
+  render() {
+    const { data, isLoading } = this.state;
+    return (
+      <div className="container">
+        <Cards data={data} isLoading={isLoading} />
 
+        <CountryPicker handleCountryChange={this.handleCountryChange} />
+      </div>
+    );
+  }
 }
-
-   render(){
-     const { data , isLoading } = this.state;
-     return(
-       <div className="container">
-        <Cards data={data } isLoading= { isLoading} />
-        
-        <CountryPicker />
-       </div>
-     )
-      
-     }
-   }
- 
-
 
 export default App;
