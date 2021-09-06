@@ -3,7 +3,7 @@ import "./App.css";
 import Cards from "./componenets/Cards/card";
 import CountryPicker from "./componenets/Country-picker/country-picker";
 import { fetchData, newFetchData } from "./api/index";
-
+import Modals from "./componenets/model/model";
 class App extends React.Component {
   state = {
     data: {},
@@ -24,7 +24,7 @@ class App extends React.Component {
   }
   handleCountryChange = async (country) => {
     const data = await newFetchData(country);
-    this.setState({ data: data, country: country});
+    this.setState({ data: data, country: country });
     console.log(data);
   };
 
@@ -35,6 +35,7 @@ class App extends React.Component {
         <Cards data={data} isLoading={isLoading} />
 
         <CountryPicker handleCountryChange={this.handleCountryChange} />
+        <Modals />
       </div>
     );
   }

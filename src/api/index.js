@@ -25,24 +25,21 @@ export const fetchData = async () => {
 };
 
 export const newFetchData = async (country) => {
-    try {
-      const { data } = await axios.get(`${url}/countries/${country}`);
-     console.log(data);
-      const newData = {
-        confirmed: data.data.latest_data.confirmed,
-        deaths: data.data.latest_data.deaths,
-        recovered: data.data.latest_data.recovered,
-        date: data.data.today.updated_at,
-      };
-  
-      // console.log(newData);
-  
-      return newData;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  try {
+    const { data } = await axios.get(`${url}/countries/${country}`);
+    console.log(data);
+    const newData = {
+      confirmed: data.data.latest_data.confirmed,
+      deaths: data.data.latest_data.deaths,
+      recovered: data.data.latest_data.recovered,
+      date: data.data.today.updated_at,
+    };
 
+    return newData;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const fetchcountries = async () => {
   try {

@@ -20,7 +20,7 @@ const Cards = ({ data: { confirmed, deaths, recovered, date }, isLoading }) => {
             </Typography>
             <Typography color="textSecondary">{date}</Typography>
             <Typography variant="body2" component="p">
-            Number of confirmed cases from COVID-19s
+              Number of confirmed cases from COVID-19s
             </Typography>
           </CardContent>
         </Grid>
@@ -34,7 +34,7 @@ const Cards = ({ data: { confirmed, deaths, recovered, date }, isLoading }) => {
             </Typography>
             <Typography color="textSecondary">{date}</Typography>
             <Typography variant="body2" component="p">
-            Number of deaths caused by COVID-19.
+              Number of deaths caused by COVID-19.
             </Typography>
           </CardContent>
         </Grid>
@@ -48,7 +48,7 @@ const Cards = ({ data: { confirmed, deaths, recovered, date }, isLoading }) => {
             </Typography>
             <Typography color="textSecondary">{date}</Typography>
             <Typography variant="body2" component="p">
-            Number of recoveries from COVID-19.
+              Number of recoveries from COVID-19.
             </Typography>
           </CardContent>
         </Grid>
