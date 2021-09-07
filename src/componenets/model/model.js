@@ -46,6 +46,9 @@ export default function SimpleModal() {
   const body = (
     <div style={modalStyle} className={classes.paper}>
      <BasicTextFields />
+     <Button variant="contained" color="primary" >
+        Submit
+      </Button>
      <Button variant="contained" color="secondary" onClick={handleClose}>
         close
       </Button>

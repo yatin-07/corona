@@ -1,18 +1,16 @@
-const Notes = require("../model/notes")
+import express from "express";
+import Notes from "../model/notes.js";
 
-const express = require("express");
 const router = express.Router();
 
-router.get('/', (req,res) => {
-  res.send('hello');
-})
-
+router.get("/", (req, res) => {
+  res.send("hello");
+});
 
 router.post("/notes", (req, res) => {
   const notes = new Notes({
     notes: req.body.notes,
-    tags: req.body.tags
-   
+    tags: req.body.tags,
   });
   notes
     .save()
@@ -23,6 +21,4 @@ router.post("/notes", (req, res) => {
       res.json(err);
     });
 });
-
-
-module.exports = router;
+export default router;

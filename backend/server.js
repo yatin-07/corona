@@ -1,17 +1,21 @@
-const express = require("express");
+import mongoose from "mongoose";
+import express from "express";
+import cors from "cors";
+import router from "./routes/route.js";
+import routeruser from "./routes/user.js";
+import dotenv from "dotenv";
 const app = express();
-const mongoose = require("mongoose");
 
-const router = require("./routes/route");
-const cors = require("cors");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-require("dotenv").config();
+
+dotenv.config();
+// require("dotenv").config();
 
 app.use(cors());
 
-
 app.use("/", router);
+app.use("/user", routeruser);
 
 if (process.env.DataBase_Connection) {
   try {
@@ -22,4 +26,4 @@ if (process.env.DataBase_Connection) {
     console.log("errr  while connecting db", "errr");
   }
 }
-app.listen(3001, () => console.log("server is running"));
+app.listen(4001, () => console.log("server is running"));

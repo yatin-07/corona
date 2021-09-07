@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const Notes = new mongoose.Schema({
+import mongoose from "mongoose";
+const Notes =  mongoose.Schema({
   notes: {
     type: String,
     required: true,
@@ -13,4 +13,5 @@ const Notes = new mongoose.Schema({
     default: Date.now(),
   },
 });
-module.exports = mongoose.model("notes", Notes);
+
+export default mongoose.model("notes", Notes);
