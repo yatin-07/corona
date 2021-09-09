@@ -3,10 +3,7 @@ const API = axios.create({ baseURL: 'http://localhost:4001' });
 
 const url = " https://corona-api.com";
 export const fetchData = async () => {
-  //    let changeurl = url;
-  //    if(country){
-  //        changeurl = `${url}/countries/${country}`
-  //    }
+  //  
   try {
     const { data } = await axios.get(`${url}/timeline`);
     //console.log(data, status);
@@ -28,7 +25,7 @@ export const fetchData = async () => {
 export const newFetchData = async (country) => {
   try {
     const { data } = await axios.get(`${url}/countries/${country}`);
-    console.log(data);
+    console.log(country);
     const newData = {
       confirmed: data.data.latest_data.confirmed,
       deaths: data.data.latest_data.deaths,
@@ -51,6 +48,14 @@ export const fetchcountries = async () => {
     // return countries.map((code) => code.code);
   } catch (error) {}
 };
+
+
+
+
+
+
+
+
 API.interceptors.request.use((req) => {
   if (localStorage.getItem('profile')) {
     req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`;
@@ -58,5 +63,8 @@ API.interceptors.request.use((req) => {
 
   return req;
 });
+
+
+
 export const signIn = (formData) => API.post('/user/signin', formData);
 export const signUp = (formData) => API.post('/user/signup', formData);

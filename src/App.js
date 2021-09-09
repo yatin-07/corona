@@ -6,6 +6,7 @@ import Home from "./componenets/home/home";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Auth from "./componenets/Auth/auth";
 import Navbar from "./componenets/navbar/navbar";
+
 class App extends React.Component {
   // state = {
   //   data: {},
@@ -43,6 +44,7 @@ class App extends React.Component {
           </Switch>
          
         </div>
+        
       </BrowserRouter>
     );
   }
