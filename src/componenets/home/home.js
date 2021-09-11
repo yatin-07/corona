@@ -5,8 +5,6 @@ import { fetchData, newFetchData } from "../../api/index";
 import Modals from "../model/model";
 import Page from "../pagination/page";
 
-
-
 class Home extends React.Component {
   state = {
     data: {},
@@ -36,9 +34,8 @@ class Home extends React.Component {
       <>
         <CountryPicker handleCountryChange={this.handleCountryChange} />
         <Cards data={data} isLoading={isLoading} />
-        <Modals />
         <Page country={country} />
-    
+        <Modals />
       </>
     );
   }

@@ -1,26 +1,142 @@
 import axios from "axios";
-import { makeStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
+import TableFooter from "@material-ui/core/TableFooter";
+import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import IconButton from "@material-ui/core/IconButton";
+import FirstPageIcon from "@material-ui/icons/FirstPage";
+import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
+import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
+import LastPageIcon from "@material-ui/icons/LastPage";
+import TableHead from "@material-ui/core/TableHead";
 import React, { useState, useEffect } from "react";
-const url = " https://corona-api.com/countries";
+
+const useStyles1 = makeStyles((theme) => ({
+  root: {
+    flexShrink: 0,
+    marginLeft: theme.spacing(2.5),
+  },
+}));
+
+function TablePaginationActions(props) {
+  const classes = useStyles1();
+  const theme = useTheme();
+  const { count, page, rowsPerPage, onPageChange } = props;
+
+  const handleFirstPageButtonClick = (event) => {
+    onPageChange(event, 0);
+  };
+
+  const handleBackButtonClick = (event) => {
+    onPageChange(event, page - 1);
+  };
+
+  const handleNextButtonClick = (event) => {
+    onPageChange(event, page + 1);
+  };
+
+  const handleLastPageButtonClick = (event) => {
+    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+  };
+  return (
+    <div className={classes.root}>
+      <IconButton
+        onClick={handleFirstPageButtonClick}
+        disabled={page === 0}
+        aria-label="first page"
+      >
+        {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
+      </IconButton>
+      <IconButton
+        onClick={handleBackButtonClick}
+        disabled={page === 0}
+        aria-label="previous page"
+      >
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowRight />
+        ) : (
+          <KeyboardArrowLeft />
+        )}
+      </IconButton>
+      <IconButton
+        onClick={handleNextButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="next page"
+      >
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowLeft />
+        ) : (
+          <KeyboardArrowRight />
+        )}
+      </IconButton>
+      <IconButton
+        onClick={handleLastPageButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="last page"
+      >
+        {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
+      </IconButton>
+    </div>
+  );
+}
+
+TablePaginationActions.propTypes = {
+  count: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+  page: PropTypes.number.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
+};
+
+const columns = [
+  { id: "name", label: "Date", minWidth: 170 },
+
+  {
+    id: "Confirmed",
+    label: "Confirmed",
+    minWidth: 170,
+    align: "right",
+  },
+  {
+    id: "Death",
+    label: "Death",
+    minWidth: 170,
+    align: "right",
+  },
+  {
+    id: "Recovered",
+    label: "Recovered",
+    minWidth: 170,
+    align: "right",
+  },
+];
+
 const useStyles = makeStyles({
-    table: {
-      minWidth: 650,
-    },
-  });
-  //export const Tabledata = () => {
-   
+  root: {
+    width: "100%",
+  },
+  container: {
+    maxHeight: 440,
+  },
+});
+
+const useStyles2 = makeStyles({
+  table: {
+    minWidth: 500,
+  },
+});
+
+const url = " https://corona-api.com/countries";
+
 const Page = ({ country }) => {
-    const classes = useStyles();
   console.log(country);
-   const [Items, setItems] = useState([]);
-  
+  const [Items, setItems] = useState([]);
+
   useEffect(() => {
     async function fetchMyAPI() {
       const { data } = await axios.get(`${url}/${country}?include=timeline`);
@@ -31,36 +147,92 @@ const Page = ({ country }) => {
     fetchMyAPI();
   }, [country]);
   console.log("items", Items);
+
+  const classes = useStyles2();
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const emptyRows =
+    rowsPerPage - Math.min(rowsPerPage, Items.length - page * rowsPerPage);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
-      <div>
-           <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="simple table">
+    <div>
+      <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="custom pagination table">
           <TableHead>
             <TableRow>
-              <TableCell>Date</TableCell>
-              <TableCell align="right">confirmed</TableCell>
-              <TableCell align="right">Deaths</TableCell>
-              <TableCell align="right">Recovered</TableCell>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.id}
+                  align={column.align}
+                  style={{ minWidth: column.minWidth }}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {Items.map((item) => (
-              <TableRow key={item.name}>
+            {(rowsPerPage > 0
+              ? Items.slice(
+                  page * rowsPerPage,
+                  page * rowsPerPage + rowsPerPage
+                )
+              : Items
+            ).map((items) => (
+              <TableRow key={items.date}>
                 <TableCell component="th" scope="row">
-                  {item.name}
+                  {items.date}
                 </TableCell>
-                <TableCell >{item.date}</TableCell>
-                <TableCell align="right">{item.confirmed}</TableCell>
-                <TableCell align="right">{item.deaths}</TableCell>
-                <TableCell align="right">{item.recovered}</TableCell>
+                <TableCell style={{ width: 160 }} align="right">
+                  {items.confirmed}
+                </TableCell>
+                <TableCell style={{ width: 160 }} align="right">
+                  {items.deaths}
+                </TableCell>
+                <TableCell style={{ width: 160 }} align="right">
+                  {items.recovered}
+                </TableCell>
               </TableRow>
             ))}
+
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                colSpan={3}
+                count={Items.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: { "aria-label": "rows per page" },
+                  native: true,
+                }}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
+            </TableRow>
+          </TableFooter>
         </Table>
       </TableContainer>
-      </div>
-  )
-  
+    </div>
+  );
 };
 
 export default Page;
